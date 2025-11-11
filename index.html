@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>шифр ебланов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.5;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        h1 {
+            text-align: center;
+            color: #bb86fc;
+        }
+        .container {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            border: 1px solid #333;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin: 10px 0;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            border: 1px solid #444;
+            border-radius: 3px;
+        }
+        button {
+            background: #bb86fc;
+            color: #121212;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #9d68d0;
+        }
+        label {
+            color: #bb86fc;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>EBG шифр</h1>
+    
+    <div class="container">
+        <label for="input-text">ZOV ZZVVZVZV:</label>
+        <textarea id="input-text" placeholder="введи текст уебок......."></textarea>
+        
+        <button id="encrypt-btn">зашифровать говно</button>
+        <button id="decrypt-btn">расшифровать говно</button>
+        <button id="clear-btn">очистить</button>
+        
+        <label for="output-text">result/</label>
+        <textarea id="output-text" placeholder="тут говнобудет короче жопа..." readonly></textarea>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputText = document.getElementById('input-text');
+            const outputText = document.getElementById('output-text');
+            const encryptBtn = document.getElementById('encrypt-btn');
+            const decryptBtn = document.getElementById('decrypt-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            
+            // Шифр Атбаш
+            function atbashCipher(text) {
+                const engAlphabet = 'abcdefghijklmnopqrstuvwxyz';
+                const engReversed = 'zyxwvutsrqponmlkjihgfedcba';
+                const rusAlphabet = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя';
+                const rusReversed = 'яюэьыъщшчцхфутсрпонмлкйизжёедгвба';
+                
+                return text.replace(/[a-zA-Zа-яА-Я]/g, function(char) {
+                    const isUpperCase = char === char.toUpperCase();
+                    const charLower = char.toLowerCase();
+                    
+                    if (engAlphabet.includes(charLower)) {
+                        const index = engAlphabet.indexOf(charLower);
+                        const newChar = engReversed.charAt(index);
+                        return isUpperCase ? newChar.toUpperCase() : newChar;
+                    } else if (rusAlphabet.includes(charLower)) {
+                        const index = rusAlphabet.indexOf(charLower);
+                        const newChar = rusReversed.charAt(index);
+                        return isUpperCase ? newChar.toUpperCase() : newChar;
+                    }
+                    return char;
+                });
+            }
+            
+            // Зеркальное отражение
+            function mirrorText(text) {
+                return text.split('').reverse().join('');
+            }
+            
+            // Шифр Цезаря
+            function caesarCipher(text, shift, encrypt = true) {
+                if (!encrypt) shift = -shift;
+                
+                return text.replace(/[a-zA-Zа-яА-Я]/g, function(char) {
+                    const isUpperCase = char === char.toUpperCase();
+                    const alphabet = /[a-zA-Z]/.test(char) ? 
+                        (char.toLowerCase() === char ? 'abcdefghijklmnopqrstuvwxyz' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') :
+                        (char.toLowerCase() === char ? 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя' : 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ');
+                    
+                    const index = alphabet.indexOf(isUpperCase ? char.toLowerCase() : char);
+                    if (index === -1) return char;
+                    
+                    let newIndex = (index + shift) % alphabet.length;
+                    if (newIndex < 0) newIndex += alphabet.length;
+                    
+                    const newChar = alphabet.charAt(newIndex);
+                    return isUpperCase ? newChar.toUpperCase() : newChar;
+                });
+            }
+            
+            // Функция шифрования (полный алгоритм)
+            function encryptText(text) {
+                // 1. Атбаш
+                let result = atbashCipher(text);
+                // 2. Зеркальное отражение
+                result = mirrorText(result);
+                // 3. Цезарь со сдвигом 12
+                result = caesarCipher(result, 12, true);
+                
+                return result;
+            }
+            
+            // Функция дешифрования (обратный алгоритм)
+            function decryptText(text) {
+                // 1. Обратный Цезарь (сдвиг -12)
+                let result = caesarCipher(text, 12, false);
+                // 2. Обратное зеркальное отражение
+                result = mirrorText(result);
+                // 3. Обратный Атбаш (он же Атбаш)
+                result = atbashCipher(result);
+                
+                return result;
+            }
+            
+            // Обработчики событий
+            encryptBtn.addEventListener('click', function() {
+                const text = inputText.value;
+                if (text.trim() === '') {
+                    alert('Введите текст для шифрования');
+                    return;
+                }
+                outputText.value = encryptText(text);
+            });
+            
+            decryptBtn.addEventListener('click', function() {
+                const text = inputText.value;
+                if (text.trim() === '') {
+                    alert('Введите текст для дешифрования');
+                    return;
+                }
+                outputText.value = decryptText(text);
+            });
+            
+            clearBtn.addEventListener('click', function() {
+                inputText.value = '';
+                outputText.value = '';
+            });
+        });
+    </script>
+</body>
+</html>
