@@ -3,34 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>шифр ебланов</title>
+    <title>.эёякжч вяв эёэёюгв ,эёёёюёъёы япй эь ,ьэдьюгьЭ чябкц а ычшщьж ошвучяьы ощьякжч ёС WMFLU_GLM_VORU_IIV</title>
+    <link rel="icon" type="image/x-icon" href="https://i.pinimg.com/736x/9e/e9/4e/9ee94e200005684758d9976e9e13a767.jpg">
     <style>
         body {
             font-family: Arial, sans-serif;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            line-height: 1.5;
             background-color: #121212;
             color: #e0e0e0;
-        }
-        h1 {
-            text-align: center;
-            color: #bb86fc;
         }
         .container {
             background: #1e1e1e;
             padding: 20px;
             border-radius: 5px;
             margin-top: 20px;
-            border: 1px solid #333;
         }
         textarea {
             width: 100%;
             height: 100px;
             margin: 10px 0;
             padding: 10px;
-            box-sizing: border-box;
             background-color: #2d2d2d;
             color: #e0e0e0;
             border: 1px solid #444;
@@ -46,28 +40,32 @@
             border-radius: 3px;
             font-weight: bold;
         }
-        button:hover {
-            background: #9d68d0;
+        .copy-btn {
+            background: #03DAC6;
         }
-        label {
-            color: #bb86fc;
-            font-weight: bold;
+        #dvd-logo {
+            position: fixed;
+            width: 120px;
+            height: 60px;
+            z-index: 0;
         }
     </style>
 </head>
 <body>
-    <h1>EBG шифр</h1>
+    <img id="dvd-logo" src="" alt="DVD Logo">
+    
+    <h1>пидорасы 12 мама ромы</h1>
     
     <div class="container">
-        <label for="input-text">ZOV ZZVVZVZV:</label>
-        <textarea id="input-text" placeholder="введи текст уебок......."></textarea>
+        <textarea id="input-text" placeholder="введи текст уебище гнилозубе маму твою к батареи приваривал сваркой и щекатал ей ноги до ее полу смерти уебок тупорылый блятль залупа пенис шаринган миньоны"></textarea>
         
-        <button id="encrypt-btn">зашифровать говно</button>
-        <button id="decrypt-btn">расшифровать говно</button>
-        <button id="clear-btn">очистить</button>
+        <div>
+            <button id="encrypt-btn">я пернул</button>
+            <button id="decrypt-btn">кифленько</button>
+            <button id="copy-btn" class="copy-btn">цитата</button>
+        </div>
         
-        <label for="output-text">result/</label>
-        <textarea id="output-text" placeholder="тут говнобудет короче жопа..." readonly></textarea>
+        <textarea id="output-text" placeholder="скачать онлайн Cкачать Cкачать игры торрент бесплатно на ПК может любой, у нас Вы найдете много новых игр на компьютер которые можно скачать игры торрент бесплатно на ПК может любой, у нас Вы найдете много новых игр на компьютер которые можно скачать" readonly></textarea>
     </div>
 
     <script>
@@ -76,9 +74,17 @@
             const outputText = document.getElementById('output-text');
             const encryptBtn = document.getElementById('encrypt-btn');
             const decryptBtn = document.getElementById('decrypt-btn');
-            const clearBtn = document.getElementById('clear-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const dvdLogo = document.getElementById('dvd-logo');
             
-            // Шифр Атбаш
+            const dvdImages = [
+                'https://i.pinimg.com/736x/39/f3/2c/39f32c5e8577fb358902125081a6b948.jpg',
+                'https://i.pinimg.com/736x/24/50/9d/24509dda68df1fa3dae9b0a615532b64.jpg',
+                'https://i.pinimg.com/1200x/67/38/dc/6738dccd556866a71ede6307419d57a1.jpg'
+            ];
+            
+            dvdLogo.src = dvdImages[Math.floor(Math.random() * dvdImages.length)];
+            
             function atbashCipher(text) {
                 const engAlphabet = 'abcdefghijklmnopqrstuvwxyz';
                 const engReversed = 'zyxwvutsrqponmlkjihgfedcba';
@@ -102,12 +108,10 @@
                 });
             }
             
-            // Зеркальное отражение
             function mirrorText(text) {
                 return text.split('').reverse().join('');
             }
             
-            // Шифр Цезаря
             function caesarCipher(text, shift, encrypt = true) {
                 if (!encrypt) shift = -shift;
                 
@@ -128,53 +132,55 @@
                 });
             }
             
-            // Функция шифрования (полный алгоритм)
             function encryptText(text) {
-                // 1. Атбаш
                 let result = atbashCipher(text);
-                // 2. Зеркальное отражение
                 result = mirrorText(result);
-                // 3. Цезарь со сдвигом 12
                 result = caesarCipher(result, 12, true);
-                
                 return result;
             }
             
-            // Функция дешифрования (обратный алгоритм)
             function decryptText(text) {
-                // 1. Обратный Цезарь (сдвиг -12)
                 let result = caesarCipher(text, 12, false);
-                // 2. Обратное зеркальное отражение
                 result = mirrorText(result);
-                // 3. Обратный Атбаш (он же Атбаш)
                 result = atbashCipher(result);
-                
                 return result;
             }
             
-            // Обработчики событий
             encryptBtn.addEventListener('click', function() {
-                const text = inputText.value;
-                if (text.trim() === '') {
-                    alert('Введите текст для шифрования');
-                    return;
-                }
-                outputText.value = encryptText(text);
+                outputText.value = encryptText(inputText.value);
             });
             
             decryptBtn.addEventListener('click', function() {
-                const text = inputText.value;
-                if (text.trim() === '') {
-                    alert('Введите текст для дешифрования');
-                    return;
-                }
-                outputText.value = decryptText(text);
+                outputText.value = decryptText(inputText.value);
             });
             
-            clearBtn.addEventListener('click', function() {
-                inputText.value = '';
-                outputText.value = '';
+            copyBtn.addEventListener('click', function() {
+                outputText.select();
+                document.execCommand('copy');
             });
+            
+            let x = Math.random() * (window.innerWidth - 120);
+            let y = Math.random() * (window.innerHeight - 60);
+            let dx = 0.5 + Math.random() * 2;
+            let dy = 0.5 + Math.random() * 2;
+            
+            function animateDVD() {
+                const maxX = window.innerWidth - dvdLogo.offsetWidth;
+                const maxY = window.innerHeight - dvdLogo.offsetHeight;
+                
+                x += dx;
+                y += dy;
+                
+                if (x <= 0 || x >= maxX) dx = -dx;
+                if (y <= 0 || y >= maxY) dy = -dy;
+                
+                dvdLogo.style.left = x + 'px';
+                dvdLogo.style.top = y + 'px';
+                
+                requestAnimationFrame(animateDVD);
+            }
+            
+            animateDVD();
         });
     </script>
 </body>
