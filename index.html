@@ -42,45 +42,14 @@
         }
         .copy-btn {
             background: #03DAC6;
-            position: relative;
-            overflow: hidden;
-            padding: 0;
-            width: 120px;
-            height: 40px;
-        }
-        .copy-btn img {
-            width: 100%;
-            height: 100%;
-            object-fit: fill;
-            display: block;
+            padding: 10px 15px;
+            margin: 5px;
         }
         #dvd-logo {
             position: fixed;
             width: 120px;
             height: 60px;
             z-index: 0;
-        }
-        .shift-control {
-            margin: 10px 0;
-        }
-        .shift-control label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .shift-control input {
-            width: 100px;
-            padding: 5px;
-            background-color: #2d2d2d;
-            color: #e0e0e0;
-            border: 1px solid #444;
-            border-radius: 3px;
-        }
-        #version {
-            position: fixed;
-            left: 10px;
-            bottom: 10px;
-            color: #666;
-            font-size: 12px;
         }
     </style>
 </head>
@@ -92,28 +61,14 @@
     <div class="container">
         <textarea id="input-text" placeholder="введи текст уебище гнилозубе маму твою к батареи приваривал сваркой и щекатал ей ноги до ее полу смерти уебок тупорылый блятль залупа пенис шаринган миньоны залупа пенис шаринган миньоны залупа пенис шаринган миньоны залупа пенис шаринган миньоны залупа пенис шаринган миньоны залупа пенис шаринган миньоны"></textarea>
         
-        <div class="shift-control">
-            <label for="caesar-shift">сдвиг уретры мамы ромы</label>
-            <input type="number" id="caesar-shift" value="12" min="1" max="33">
-        </div>
-        
         <div>
-            <button id="encrypt-btn">я пернул</button>
-            <button id="decrypt-btn">кифленько</button>
+            <button id="encrypt-btn">я пернуль</button>
+            <button id="decrypt-btn">кифленьковать</button>
         </div>
         
         <textarea id="output-text" placeholder="скачать онлайн Cкачать Cкачать игры торрент бесплатно на ПК может любой, у нас Вы найдете много новых игр на компьютер которые можно скачать игры торрент бесплатно на ПК может любой, у нас Вы найдете много новых игр на компьютер которые можно скачать" readonly></textarea>
-            <button id="copy-btn" class="copy-btn">
-                <img src="https://i.pinimg.com/1200x/5a/97/c3/5a97c3697596697ae2632cc4b8844d05.jpg" alt="Copy">
-            </button>
+        <button id="copy-btn" class="copy-btn">Копировать</button>
     </div>
-
-<div id="version">
-  ВЕРСИЯ САЙТА
-  <span class="math-example" style="font-weight: bold; font-family: monospace; white-space: nowrap; font-size: 1.2em;">
-    &minus;(&minus;(&minus;(&minus;( 100 &minus; 99 ) &times; &sup3;&radic;27 &plus; &radic;16 &times; &sup2;log&sup4; &minus; ( 5! &minus; 110 ) &minus; ( (2&sup3; + 1) &divide; 3 ) &plus; &pi;&sup0; + &radic;144 &minus; 11 &minus; 2&sup2; ) ) ) ) &plus; &minus;(&minus;( &radic;9 &minus; 5 + 2)) &plus; ( (4! &minus; 20) &divide; 4 ) &times; &sup3;&radic;8 &minus; ( 10 &divide; 2 ) &plus; ( &radic;25 &minus; 2 )
-  </span>
-</div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -123,7 +78,6 @@
             const decryptBtn = document.getElementById('decrypt-btn');
             const copyBtn = document.getElementById('copy-btn');
             const dvdLogo = document.getElementById('dvd-logo');
-            const caesarShiftInput = document.getElementById('caesar-shift');
             
             const dvdImages = [
                 'https://i.pinimg.com/736x/39/f3/2c/39f32c5e8577fb358902125081a6b948.jpg',
@@ -136,53 +90,38 @@
             const backgroundImages = [
                 'https://i.pinimg.com/736x/53/5c/55/535c550c4e9a59d257f3b056bbefd572.jpg',
                 'https://i.pinimg.com/736x/ee/cf/e1/eecfe10e86a6b5be93189996ebe75191.jpg',
-                'https://i.pinimg.com/736x/12/ef/d7/12efd75405572940658fbb7e4da00b7e.jpg',
-                'https://i.pinimg.com/736x/70/9a/0e/709a0e8f7d7f35764ff253618a06e9af.jpg',
-                'https://i.pinimg.com/736x/7f/a3/22/7fa322858831de8e4511ab1dbc690030.jpg'
+                'https://i.pinimg.com/736x/12/ef/d7/12efd75405572940658fbb7e4da00b7e.jpg'
             ];
             
             const randomBgImage = backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
-            document.body.style.backgroundImage = `linear-gradient(rgba(18, 18, 18, 0.85), rgba(18, 18, 18, 0.85)), url("${randomBgImage}           ")`;
+            document.body.style.backgroundImage = `linear-gradient(rgba(18, 18, 18, 0.85), rgba(18, 18, 18, 0.85)), url("${randomBgImage}")`;
             document.body.style.backgroundSize = 'cover';
             document.body.style.backgroundPosition = 'center';
-            document.body.style.backgroundAttachment = 'fixed';
 
-            // Шифр Скитала (Scytale)
             function scytaleCipher(text, diameter = 4) {
                 if (!text) return '';
-                
                 let result = '';
                 const rows = Math.ceil(text.length / diameter);
-                
                 for (let i = 0; i < diameter; i++) {
                     for (let j = 0; j < rows; j++) {
                         const index = i + j * diameter;
-                        if (index < text.length) {
-                            result += text[index];
-                        }
+                        if (index < text.length) result += text[index];
                     }
                 }
-                
                 return result;
             }
             
-            // Дешифрование Скитала
             function scytaleDecipher(text, diameter = 4) {
                 if (!text) return '';
-                
                 let result = '';
                 const rows = Math.ceil(text.length / diameter);
                 const cols = diameter;
-                
                 for (let i = 0; i < rows; i++) {
                     for (let j = 0; j < cols; j++) {
                         const index = i + j * rows;
-                        if (index < text.length) {
-                            result += text[index];
-                        }
+                        if (index < text.length) result += text[index];
                     }
                 }
-                
                 return result;
             }
             
@@ -190,35 +129,12 @@
                 return text.split('').reverse().join('');
             }
             
-            function caesarCipher(text, shift, encrypt = true) {
-                if (!encrypt) shift = -shift;
-                
-                return text.replace(/[a-zA-Zа-яА-Я]/g, function(char) {
-                    const isUpperCase = char === char.toUpperCase();
-                    const alphabet = /[a-zA-Z]/.test(char) ? 
-                        (char.toLowerCase() === char ? 'abcdefghijklmnopqrstuvwxyz' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') :
-                        (char.toLowerCase() === char ? 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя' : 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ');
-                    
-                    const index = alphabet.indexOf(isUpperCase ? char.toLowerCase() : char);
-                    if (index === -1) return char;
-                    
-                    let newIndex = (index + shift) % alphabet.length;
-                    if (newIndex < 0) newIndex += alphabet.length;
-                    
-                    const newChar = alphabet.charAt(newIndex);
-                    return isUpperCase ? newChar.toUpperCase() : newChar;
-                });
-            }
-            
-            // ROT13 для английских букв
             function rot13(text) {
                 return text.replace(/[a-zA-Z]/g, function(char) {
                     const isUpperCase = char === char.toUpperCase();
                     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
                     const index = alphabet.indexOf(char.toLowerCase());
-                    
                     if (index === -1) return char;
-                    
                     let newIndex = (index + 13) % alphabet.length;
                     const newChar = alphabet.charAt(newIndex);
                     return isUpperCase ? newChar.toUpperCase() : newChar;
@@ -226,18 +142,14 @@
             }
             
             function encryptText(text) {
-                const shift = parseInt(caesarShiftInput.value) || 12;
                 let result = scytaleCipher(text, 4);
                 result = mirrorText(result);
                 result = rot13(result);
-                result = caesarCipher(result, shift, true);
                 return result;
             }
             
             function decryptText(text) {
-                const shift = parseInt(caesarShiftInput.value) || 12;
-                let result = caesarCipher(text, shift, false);
-                result = rot13(result);
+                let result = rot13(text);
                 result = mirrorText(result);
                 result = scytaleDecipher(result, 4);
                 return result;
@@ -258,22 +170,18 @@
             
             let x = Math.random() * (window.innerWidth - 120);
             let y = Math.random() * (window.innerHeight - 60);
-            let dx = 0.5 + Math.random() * 2;
-            let dy = 0.5 + Math.random() * 2;
+            let dx = 40.5 + Math.random() * 2;
+            let dy = 40.5 + Math.random() * 2;
             
             function animateDVD() {
                 const maxX = window.innerWidth - dvdLogo.offsetWidth;
                 const maxY = window.innerHeight - dvdLogo.offsetHeight;
-                
                 x += dx;
                 y += dy;
-                
                 if (x <= 0 || x >= maxX) dx = -dx;
                 if (y <= 0 || y >= maxY) dy = -dy;
-                
                 dvdLogo.style.left = x + 'px';
                 dvdLogo.style.top = y + 'px';
-                
                 requestAnimationFrame(animateDVD);
             }
             
