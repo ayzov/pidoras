@@ -45,21 +45,26 @@
             padding: 10px 15px;
             margin: 5px;
         }
-        #dvd-logo {
+        .ad-image {
             position: fixed;
-            width: 120px;
-            height: 60px;
-            z-index: 0;
+            width: 800px;
+            height: 600px;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+            object-fit: contain;
+            /* Добавляем адаптивность для маленьких экранов */
+            max-width: 90vw;
+            max-height: 90vh;
         }
     </style>
 </head>
 <body>
-    <img id="dvd-logo" src="" alt="DVD Logo">
-    
     <h1>пидорасы 12 мама ромы</h1>
     
     <div class="container">
-        <textarea id="input-text" placeholder="введи текст уебище гнилозубе маму твою к батареи приваривал сваркой и щекатал ей ноги до ее полу смерти уебок тупорылый блятль залупа пенис шаринган миньоны залупа пенис шаринган миньоны залупа пенис шаринган миньоны залупа пенис шаринган миньоны залупа пенис шаринган миньоны залупа пенис шаринган миньоны"></textarea>
+        <textarea id="input-text" placeholder="введи текст уебище гнилозубе маму твою к батареи приваривал сваркой и щекатал ей ноги до ее полу смерти уебок тупорылый О НЕТ ЧЕТВЕРКИ ПОЕЖАЛИ О НЕТ ПОБЕГУ ТОЖЕ 44444бл4ятль з4а4луп4а4 пен34144143ис шаринган миньоны залупа пенис шаринган миньоны ЧЕТВЕРКИ О НЕТ ЧЕТВЕРКУИ 44444444залупа пенис шаринган миньоны залупа пенис шаринган скачать 341431миньоны залупа пенис шаринган миньоны залупа пенис шаринган миньоны"></textarea>
         
         <div>
             <button id="encrypt-btn">я пернуль</button>
@@ -77,15 +82,6 @@
             const encryptBtn = document.getElementById('encrypt-btn');
             const decryptBtn = document.getElementById('decrypt-btn');
             const copyBtn = document.getElementById('copy-btn');
-            const dvdLogo = document.getElementById('dvd-logo');
-            
-            const dvdImages = [
-                'https://i.pinimg.com/736x/39/f3/2c/39f32c5e8577fb358902125081a6b948.jpg',
-                'https://i.pinimg.com/736x/24/50/9d/24509dda68df1fa3dae9b0a615532b64.jpg',
-                'https://i.pinimg.com/1200x/67/38/dc/6738dccd556866a71ede6307419d57a1.jpg'
-            ];
-            
-            dvdLogo.src = dvdImages[Math.floor(Math.random() * dvdImages.length)];
             
             const backgroundImages = [
                 'https://i.pinimg.com/736x/53/5c/55/535c550c4e9a59d257f3b056bbefd572.jpg',
@@ -97,6 +93,65 @@
             document.body.style.backgroundImage = `linear-gradient(rgba(18, 18, 18, 0.85), rgba(18, 18, 18, 0.85)), url("${randomBgImage}")`;
             document.body.style.backgroundSize = 'cover';
             document.body.style.backgroundPosition = 'center';
+
+            // Функция для показа рекламных изображений
+
+            function showRandomAd() {
+                // Создаем элемент изображения
+                const adImg = document.createElement('img');
+                adImg.className = 'ad-image';
+                
+                // Выбираем случайное изображение от 1 до 74
+                const randomImageNum = Math.floor(Math.random() * 74) + 1;
+                adImg.src = `rus_ads/image_${randomImageNum}.png`;
+                
+                // Получаем размеры экрана и изображения
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                const adWidth = 800; // ширина изображения
+                const adHeight = 600; // высота изображения
+                
+                // Проверяем, помещается ли изображение на экране
+                if (screenWidth >= adWidth && screenHeight >= adHeight) {
+                    // Случайная позиция на экране с учетом границ
+                    const maxX = screenWidth - adWidth;
+                    const maxY = screenHeight - adHeight;
+                    const randomX = Math.floor(Math.random() * maxX);
+                    const randomY = Math.floor(Math.random() * maxY);
+                    
+                    adImg.style.left = `${randomX}px`;
+                    adImg.style.top = `${randomY}px`;
+                } else {
+                    // Если экран слишком маленький, центрируем изображение
+                    adImg.style.left = '50%';
+                    adImg.style.top = '50%';
+                    adImg.style.transform = 'translate(-50%, -50%)';
+                    // Уменьшаем размер для маленьких экранов
+                    adImg.style.width = '90vw';
+                    adImg.style.height = 'auto';
+                    adImg.style.maxWidth = '800px';
+                    adImg.style.maxHeight = '600px';
+                }
+                
+                // Добавляем изображение на страницу
+                document.body.appendChild(adImg);
+                
+                // Удаляем изображение через 2 секунды
+                setTimeout(() => {
+                    adImg.style.opacity = '0';
+                    setTimeout(() => {
+                        if (adImg.parentNode) {
+                            adImg.parentNode.removeChild(adImg);
+                        }
+                    }, 300);
+                }, 2000);
+            }
+            
+            // Запускаем показ рекламы каждые 2 секунды
+            setInterval(showRandomAd, 2000);
+            
+            // Показываем первую рекламу сразу после загрузки
+            setTimeout(showRandomAd, 1000);
 
             function scytaleCipher(text, diameter = 4) {
                 if (!text) return '';
@@ -129,32 +184,20 @@
                 return text.split('').reverse().join('');
             }
             
-            function rot13(text) {
-                return text.replace(/[a-zA-Z]/g, function(char) {
-                    const isUpperCase = char === char.toUpperCase();
-                    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-                    const index = alphabet.indexOf(char.toLowerCase());
-                    if (index === -1) return char;
-                    let newIndex = (index + 13) % alphabet.length;
-                    const newChar = alphabet.charAt(newIndex);
-                    return isUpperCase ? newChar.toUpperCase() : newChar;
-                });
-            }
             
             function encryptText(text) {
                 let result = scytaleCipher(text, 4);
                 result = mirrorText(result);
-                result = rot13(result);
+                result = result.replace(/ /g, "ZOV");
                 return result;
             }
             
             function decryptText(text) {
-                let result = rot13(text);
+                let result = text.replace(/ZOV/g, " ");
                 result = mirrorText(result);
                 result = scytaleDecipher(result, 4);
                 return result;
             }
-            
             encryptBtn.addEventListener('click', function() {
                 outputText.value = encryptText(inputText.value);
             });
@@ -167,27 +210,7 @@
                 outputText.select();
                 document.execCommand('copy');
             });
-            
-            let x = Math.random() * (window.innerWidth - 120);
-            let y = Math.random() * (window.innerHeight - 60);
-            let dx = 0.5 + Math.random() * 2;
-            let dy = 0.5 + Math.random() * 2;
-            
-            function animateDVD() {
-                const maxX = window.innerWidth - dvdLogo.offsetWidth;
-                const maxY = window.innerHeight - dvdLogo.offsetHeight;
-                x += dx;
-                y += dy;
-                if (x <= 0 || x >= maxX) dx = -dx;
-                if (y <= 0 || y >= maxY) dy = -dy;
-                dvdLogo.style.left = x + 'px';
-                dvdLogo.style.top = y + 'px';
-                requestAnimationFrame(animateDVD);
-            }
-            
-            animateDVD();
         });
     </script>
 </body>
 </html>
-
